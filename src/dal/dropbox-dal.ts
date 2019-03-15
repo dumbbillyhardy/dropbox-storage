@@ -1,5 +1,4 @@
 import {Dropbox} from 'dropbox';
-import {DropboxAuth} from '../dropbox-auth';
 import {generateUUID} from './uuid';
 import {DatabaseAbstractionLayer} from './dal';
 
@@ -17,30 +16,22 @@ export interface ListFolderResult {
 }
 
 export class DropboxDAL implements DatabaseAbstractionLayer {
-  private authenticated: Promise<Dropbox>;
-  constructor(readonly dropboxAuth: DropboxAuth, readonly basePath: string = '') {
-    this.authenticated = this.dropboxAuth.authenticate();
-  }
+  constructor(readonly dropbox: Dropbox, readonly basePath: string = '') {}
 
   create(id: string, data: string): Promise<string> {
-    return this.authenticated
-    .then((dropbox) => {
-      const contents = new Blob([data], {type: "text/plain"});
-      return dropbox.filesUpload({
-        path: `${this.basePath}/${id}.txt`,
-        mode: {
-          ".tag": "overwrite",
-        },
-        contents,
-      })
-        .then(() => id);
-    });
+    const contents = new Blob([data], {type: "text/plain"});
+    return this.dropbox.filesUpload({
+      path: `${this.basePath}/${id}.txt`,
+      mode: {
+        ".tag": "overwrite",
+      },
+      contents,
+    })
+    .then(() => id);
   }
 
   read(id: string): Promise<string> {
-    return this.authenticated.then((dropbox) => {
-      return dropbox.filesDownload({path: `${this.basePath}/${id}.txt`});
-    })
+    return this.dropbox.filesDownload({path: `${this.basePath}/${id}.txt`})
     .then((content) => {
       const reader = new FileReader();
       return new Promise<string>((resolve) => {
@@ -54,32 +45,23 @@ export class DropboxDAL implements DatabaseAbstractionLayer {
   }
 
   update(id: string, data: string): Promise<string> {
-    return this.authenticated
-    .then((dropbox) => {
-      const contents = new Blob([data], {type: "text/plain"});
-      return dropbox.filesUpload({
-        path: `${this.basePath}/${id}.txt`,
-        mode: {
-          ".tag": "overwrite",
-        },
-        contents,
-      });
+    const contents = new Blob([data], {type: "text/plain"});
+    return this.dropbox.filesUpload({
+      path: `${this.basePath}/${id}.txt`,
+      mode: {
+        ".tag": "overwrite",
+      },
+      contents,
     })
     .then(() => data);
   }
 
   delete(id: string): Promise<void> {
-    return this.authenticated
-    .then((dropbox) => {
-      return;
-    });
+    return Promise.reject();
   }
 
   getAllIds(): Promise<string[]> {
-    return this.authenticated
-    .then((dropbox) => {
-      return dropbox.filesListFolder({path: this.basePath});
-    })
+    return this.dropbox.filesListFolder({path: this.basePath})
     .then(({entries}) => entries.map(m => m.name).map(n => n.replace(".txt", "")));
   }
 }

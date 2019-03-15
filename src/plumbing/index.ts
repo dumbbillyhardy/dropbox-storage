@@ -2,7 +2,6 @@ import {TodoList, Todo} from '../todos/todo';
 import {TransientDAL} from '../dal/transient-dal';
 import {DropboxDAL} from '../dal/dropbox-dal';
 import {TodoServiceDALBacked} from '../todo-service/todo-service-dalbacked';
-import {DropboxAuth} from '../dropbox-auth/index';
 import {Dropbox} from 'dropbox';
 
 const store = new TransientDAL();
@@ -16,9 +15,11 @@ service.createTodoList(list)
 
 
 const API_KEY = "fpcdyqdlll231rq";
-const dropbox = new Dropbox({clientId: API_KEY});
-const auth = new DropboxAuth(dropbox, "");
-const dropboxStore = new DropboxDAL(auth);
+const dropbox = new Dropbox({
+  clientId: API_KEY,
+  accessToken: "8I0f3Ll3VugAAAAAAAAUoWn2TQpaLKgLOhKLg10rXry5nTc9GZTY2AxRil9Ahkn2"
+});
+const dropboxStore = new DropboxDAL(dropbox);
 const dropboxService = new TodoServiceDALBacked(dropboxStore);
 dropboxStore.getAllIds().then((files) => {
   files.forEach((file) => {
