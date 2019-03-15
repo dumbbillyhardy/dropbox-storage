@@ -10,6 +10,10 @@
       "dom",
       "es2018"
     ],
-    "types": ["mocha"]
+    "moduleResolution": "node",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "sourceMap": true,
+    "types": ["mocha"],
   }
 }
