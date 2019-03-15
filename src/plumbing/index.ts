@@ -17,7 +17,7 @@ service.createTodoList(list)
 const API_KEY = "fpcdyqdlll231rq";
 const dropbox = new Dropbox({
   clientId: API_KEY,
-  accessToken: "8I0f3Ll3VugAAAAAAAAUoWn2TQpaLKgLOhKLg10rXry5nTc9GZTY2AxRil9Ahkn2"
+  accessToken: ""
 });
 const dropboxStore = new DropboxDAL(dropbox);
 const dropboxService = new TodoServiceDALBacked(dropboxStore);
