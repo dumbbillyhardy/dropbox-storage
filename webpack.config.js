@@ -3,7 +3,7 @@ module.exports = {
       entry: './dist/plumbing/index.js',
       output: {
           filename: './bundle.js',
-          path: path.resolve(__dirname, 'dist/plumbing/')
+          path: path.resolve(__dirname, 'dist/plumbing')
       },
       mode: "development"
 };
