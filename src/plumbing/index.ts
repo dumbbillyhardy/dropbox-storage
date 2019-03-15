@@ -15,10 +15,14 @@ service.createTodoList(list)
 
 
 const API_KEY = "fpcdyqdlll231rq";
+const accessToken = getAccessToken();
 const dropbox = new Dropbox({
   clientId: API_KEY,
-  accessToken: ""
+  accessToken,
 });
+if(accessToken == null) {
+  document.body.innerHTML = `<a href=${getAuthUrl()}>Authenticate with dropbox</a>`;
+}
 const dropboxStore = new DropboxDAL(dropbox);
 const dropboxService = new TodoServiceDALBacked(dropboxStore);
 dropboxStore.getAllIds().then((files) => {
@@ -27,13 +31,21 @@ dropboxStore.getAllIds().then((files) => {
   });
 });
 
+export function getAuthUrl() {
+  return dropbox.getAuthenticationUrl(window.location.origin + window.location.pathname);
+}
 
 //const authUrl = window.location.origin + window.location.pathname;
-// const accessToken = window.localStorage.getItem("access_token");
 
-// window.localStorage.setItem("access_token", this.dropbox.accessToken);
-//const hashParams = new URLSearchParams(window.location.hash.replace("#", "?"));
-//    if(hashParams.has("access_token")) {
-//      this.dropbox.accessToken = hashParams.get("access_token");
-//      return Promise.resolve(this.dropbox);
-//    }
+function getAccessToken() {
+  const accessToken = window.localStorage.getItem("access_token");
+  if(accessToken) {
+    return accessToken;
+  }
+  const hashParams = new URLSearchParams(window.location.hash.replace("#", "?"));
+  if(hashParams.has("access_token")) {
+    const accessToken = hashParams.get("access_token");
+    window.localStorage.setItem("access_token", accessToken);
+    return accessToken;
+  }
+}
