@@ -1,0 +1,27 @@
+{
+  "name": "dropbox-storage",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "tsc && mocha --recursive './src/**/*_test.js'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dumbbillyhardy/dropbox-storage.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dumbbillyhardy/dropbox-storage/issues"
+  },
+  "homepage": "https://github.com/dumbbillyhardy/dropbox-storage#readme",
+  "dependencies": {
+    "dropbox": "^4.0.16"
+  },
+  "devDependencies": {
+    "@types/mocha": "^5.2.6",
+    "chai": "^4.2.0",
+    "mocha": "^6.0.2"
+  }
+}
