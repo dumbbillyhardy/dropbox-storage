@@ -18,10 +18,9 @@ export interface ListFolderResult {
 export class DropboxDAL implements DatabaseAbstractionLayer {
   constructor(readonly authenticated: Promise<Dropbox>, readonly basePath: string = '') {}
 
-  create(data: string): Promise<string> {
+  create(id: string, data: string): Promise<string> {
     return this.authenticated
     .then((dropbox) => {
-      const id = generateUUID();
       const contents = new Blob([data], {type: "text/plain"});
       return dropbox.filesUpload({
         path: `${this.basePath}/${id}.txt`,

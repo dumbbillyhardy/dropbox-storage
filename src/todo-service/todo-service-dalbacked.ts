@@ -6,7 +6,7 @@ export class TodoServiceDALBacked implements TodoService {
   constructor(private dal: DatabaseAbstractionLayer) {}
 
   createTodoList(list: TodoList): Promise<TodoList> {
-    return this.dal.create(list.toString())
+    return this.dal.create(list.title, list.toString())
     .then((title) => {
       const todos = list.todos.map(t => new Todo(t.content, t.done));
       return new TodoList(title, todos);

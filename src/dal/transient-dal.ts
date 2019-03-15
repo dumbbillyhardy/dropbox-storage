@@ -4,8 +4,7 @@ import {generateUUID} from './uuid';
 export class TransientDAL implements DatabaseAbstractionLayer {
   private data = new Map<string, string>();
 
-  create(data: string): Promise<string> {
-    const id = generateUUID();
+  create(id: string, data: string): Promise<string> {
     this.data.set(id, data);
     return Promise.resolve(id);
   }
