@@ -1,4 +1,5 @@
 import {Dropbox} from 'dropbox';
+import {DropboxAuth} from '../dropbox-auth';
 import {generateUUID} from './uuid';
 import {DatabaseAbstractionLayer} from './dal';
 
@@ -16,7 +17,10 @@ export interface ListFolderResult {
 }
 
 export class DropboxDAL implements DatabaseAbstractionLayer {
-  constructor(readonly authenticated: Promise<Dropbox>, readonly basePath: string = '') {}
+  private authenticated: Promise<Dropbox>;
+  constructor(readonly dropboxAuth: DropboxAuth, readonly basePath: string = '') {
+    this.authenticated = this.dropboxAuth.authenticate();
+  }
 
   create(id: string, data: string): Promise<string> {
     return this.authenticated
@@ -76,6 +80,6 @@ export class DropboxDAL implements DatabaseAbstractionLayer {
     .then((dropbox) => {
       return dropbox.filesListFolder({path: this.basePath});
     })
-    .then(({entries}) => entries.map(m => m.name));
+    .then(({entries}) => entries.map(m => m.name).map(n => n.replace(".txt", "")));
   }
 }
