@@ -15,5 +15,6 @@
     "rootDir": "./src",
     "sourceMap": true,
     "types": ["mocha"],
+    "target": "es2015",
   }
 }
