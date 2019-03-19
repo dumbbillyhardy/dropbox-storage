@@ -3,6 +3,7 @@ import {TransientDAL} from '../dal/transient-dal';
 import {DropboxDAL} from '../dal/dropbox-dal';
 import {TodoServiceDALBacked} from '../todo-service/todo-service-dalbacked';
 import {Dropbox} from 'dropbox';
+import {TodoApp} from '../app/todo-app';
 
 const store = new TransientDAL();
 
@@ -26,10 +27,12 @@ if(accessToken == null) {
 const dropboxStore = new DropboxDAL(dropbox);
 const dropboxService = new TodoServiceDALBacked(dropboxStore);
 dropboxStore.getAllIds().then((files) => {
-  files.forEach((file) => {
-    dropboxService.readTodoList(file).then(console.log)
+  return Promise.all(files.map((file) => dropboxService.readTodoList(file)));
+})
+  .then((todolists: TodoList[]) => {
+    const app = document.querySelector('todo-app') as any as TodoApp;
+    app.todoLists = todolists;
   });
-});
 
 export function getAuthUrl() {
   return dropbox.getAuthenticationUrl(window.location.origin + window.location.pathname);
