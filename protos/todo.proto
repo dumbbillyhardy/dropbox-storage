@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+message Todo {
+  string name = 1;
+  bool done = 2;
+}
+
+message TodoList {
+  string title = 1;
+  repeated Todo todos = 2;
+}
