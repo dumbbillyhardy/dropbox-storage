@@ -6,6 +6,7 @@
     "node_modules"
   ],
   "compilerOptions": {
+    "allowJs": true,
     "lib": [
       "dom",
       "es2018"
