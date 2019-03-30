@@ -4,6 +4,9 @@ import {DropboxDAL} from '../dal/dropbox-dal';
 import {TodoServiceDALBacked} from '../todo-service/todo-service-dalbacked';
 import {Dropbox} from 'dropbox';
 import {TodoApp} from '../app/todo-app';
+import {doIt} from '../test';
+
+doIt();
 
 const store = new TransientDAL();
 
